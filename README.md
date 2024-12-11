@@ -1,4 +1,4 @@
-# Quizz 2
+# Quizz 3
 
 Installez [pixi], puis dans le répertoire du projet, tapez
 

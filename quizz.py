@@ -6,7 +6,7 @@ app = marimo.App(width="medium")
 
 @app.cell
 def __(mo):
-    mo.md("""# Mines AP 2024-2025 Groupe 6 - Quizz 2""")
+    mo.md("""# Mines AP 2024-2025 Groupe 6 - Quizz 3""")
     return
 
 
@@ -16,23 +16,21 @@ def __(mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __(mo):
     widget_1 = mo.ui.radio(
-        options={"?": None, "0.12": "0.12", "0.91": "0.91", "1.0": "1.0", "Une erreur": "Une erreur"},
-        value="?",
+        options={"None": None, "0": "0", "7": "7", "15": "15"},
+        value=None,
     )
 
     comments_1 = mo.ui.text_area(debounce=False)
-    mo.md(f"""
-    Qu'affiche le code Python suivant quand on l'exécute ?
+    mo.md(f'''
+    Quelle est la valeur de `s` à l'issue de l'exécution de ce code?
     ```python
-    scores = [0.12, 0.66, 0.45, 0.91, 0.77, 1.0]
-    threshold = 0.90
-    for score in scores:
-        if score >= threshold:
-            break
-    print(score)
+    d = {{"a": 1, "b": 2, "d": 4}}
+    s = 0
+    for key in ["a", "b", "c", "d", "e", "f"]:
+        s = s + d.get(key, 0)
     ```
 
     {widget_1}
@@ -40,7 +38,7 @@ def __(mo):
     Commentaires:
 
     {comments_1}
-    """)
+    ''')
     return comments_1, widget_1
 
 
@@ -50,38 +48,30 @@ def __(mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __(mo):
-    widget_2 = mo.ui.text()
+    widget_2 = mo.ui.code_editor(value='''\
+    objects = [None, 1, 2.0, 3.0+0j, "quatre"]
+    hashes = {{hash(obj) % 2**8 for obj in objects}}\
+    ''')
 
     comments_2 = mo.ui.text_area(debounce=False)
 
-    mo.md(f"""
-    Qu'affiche le code Python suivant quand on l'exécute ?
+    mo.md(f'''
+    Réécrire le code suivant sans utiliser de "set comprehension" (notation "set-builder")
 
     ```python
-    answer = None
-
-    def set_answer():
-        global answer
-        answer = 42
-
-    def print_answer():
-        print(answer)
-
-    set_answer()
-    print_answer()
+    objects = [None, 1, 2.0, 3.0+0j, "quatre"]
+    hashes = {{hash(obj) % 2**8 for obj in objects}}
     ```
 
-
-    Votre réponse :
-
+    Votre réponse:
     {widget_2}
 
     Commentaires:
 
     {comments_2}
-    """)
+    ''')
     return comments_2, widget_2
 
 
@@ -91,33 +81,26 @@ def __(mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def __(mo):
     widget_3 = mo.ui.array([mo.ui.checkbox()] * 6)
     comments_3 = mo.ui.text_area(debounce=False)
 
     mo.md(
         f"""
-    Le code Python
+    Sélectionnez les expressions qui correspondent à des dictionnaires valides.
 
-    ``` python
-    c = 2.0 + 3.0j
-    print(c.real, c.conjugate())
-    ```
+     - {widget_3[0]} `{{}}`
 
-    s'exécute sans erreur et affiche `2.0 (2-3j)`. Parmi les assertions suivantes, lesquelles sont vraies ?
+     - {widget_3[1]} `{{"a": 1, "b": 2, "c": 3}}`
 
-     - {widget_3[0]} `c in dir()`
+     - {widget_3[2]} `{{1: ["one", "un"], 2: ["two", "deux"], 3: ["three", "trois"]}}`
 
-     - {widget_3[1]} `"c" in dir()`
+     - {widget_3[3]} `{{n: str(n) for n in range(10)}}`
 
-     - {widget_3[2]} `"c" in dir(c)`
+     - {widget_3[4]} `{{[]: 0, [0]: 1, [0, 1]: 2}}`
 
-     - {widget_3[3]} `"real" in dir(c)`
-
-     - {widget_3[4]} `"conjugate" in dir(c)`
-
-     - {widget_3[5]} `"conjugate()" in dir(c)`
+     - {widget_3[5]} `{{False: 0, True: 1}}`
 
     Commentaires :
 
@@ -130,35 +113,30 @@ def __(mo):
 
 @app.cell
 def __(mo):
-    widget_4 = mo.ui.text_area(debounce=False)
+    widget_4 = mo.ui.array([mo.ui.checkbox()] * 6)
     comments_4 = mo.ui.text_area(debounce=False)
 
 
     mo.md(f"""## Question 4
 
-    Dans le code Python
+    Un graphique extrait de la spécification JSON:
 
-    ```python
-    import pyxel
+    ![](https://www.json.org/img/number.png)
 
-    def update():
-        if pyxel.btnp(pyxel.KEY_Q):
-            pyxel.quit()
+    Sélectionnez les chaînes de caractères `number_json` qui sont des représentations valides de nombres en JSON 
+    (c'est-à-dire qui ne vont pas générer d'erreur quand on va exécuter `number = json.loads(number_json))`)
 
-    def draw():
-        pyxel.cls(0)
-        color = pyxel.frame_count % 16
-        pyxel.text(56, 54, "Hello, Snake!", color)
+     - {widget_4[0]} `number_json = "-0"`
 
-    pyxel.init(160, 120)
-    pyxel.run(update, draw)
-    ```
+     - {widget_4[1]} `number_json = "1_000"`
 
-    quels sont les types des variables globales `pyxel` et `update` et de la variable locale `color` ?
+     - {widget_4[2]} `number_json = "0e23"`
 
-    Votre réponse :
+     - {widget_4[3]} `number_json = "inf"`
 
-    {widget_4}
+     - {widget_4[4]} `number_json = "42"`
+
+     - {widget_4[5]} `number_json = "007"`
 
     Commentaires :
 
@@ -176,16 +154,15 @@ def __(mo):
 
     mo.md(f"""## Question 5
 
-    Si `l1 == [1, 2, 3]` et `l2 is l1` sont initialement vrais
+    Supposons que `s1 = {{"a", "b", "c"}}` et `s2 = {{"c", "b", "a"}}`. Alors
 
+     - {widget_5[0]} on a `s2 == s1`
 
-     - {widget_5[0]} on a `l2 == l1`
+     - {widget_5[1]} on a `s1 | s2 == s1`
 
-     - {widget_5[1]} on a `id(l2) == id(l1)`
+     - {widget_5[2]} on a `s1 - s2 == s1`
 
-     - {widget_5[2]} on a `l1 is l2`
-
-     - {widget_5[3]} si l'on exécute `l1 = [1, 2, 3, 4]`, on a alors `l2 == [1, 2, 3, 4]`
+     - {widget_5[3]} on a `set(list(s1) + list(s1)) == s1`
 
     Commentaires :
 
@@ -198,20 +175,30 @@ def __(mo):
 
 @app.cell
 def __(mo):
-    widget_6 = mo.ui.text()
+    widget_6 = mo.ui.code_editor(value='''NAMES = ["Aaron", "Abel", "Abigaël", "Abraham", ...] # The real list is much longer
+
+    def is_classic_name(name):
+        """
+        Returns True if name belongs to the list of known names, False otherwise.
+        """  
+        return name in NAMES''')
 
     comments_6 = mo.ui.text_area(debounce=False)
 
-    mo.md(f"""## Question 6
+    mo.md(f'''## Question 6
 
-    Qu'affiche le code
+
+    Comment modiferiez-vous le code suivant pour que l'usage de la fonction `is_classic_name` soit plus performant ?
 
     ```python
-    for item in {{"a": 1, "b": 2, "c": 3}}:
-        print(item)
-    ```
+    NAMES = ["Aaron", "Abel", "Abigaël", "Abraham", ...] # The real list is much longer
 
-    ?
+    def is_classic_name(name):
+        """
+        Returns True if name belongs to the list of known names, False otherwise.
+        """  
+        return name in NAMES
+    ```
 
     Votre réponse:
 
@@ -221,7 +208,7 @@ def __(mo):
 
     {comments_6}
 
-    """)
+    ''')
     return comments_6, widget_6
 
 
@@ -270,7 +257,7 @@ def __(
 
 @app.cell
 def __(mo):
-    autosave = mo.ui.checkbox(label="autosave to answer.py", value=True)
+    autosave = mo.ui.checkbox(label="Sauvegarde automatique dans le fichier answer.py", value=True)
     autosave
     return (autosave,)
 
@@ -286,7 +273,7 @@ def __(answer, autosave):
 @app.cell
 def __(answer, mo, urllib):
     to = "Sebastien.Boisgerault@minesparis.psl.eu"
-    subject = "Quizz AP #2"
+    subject = "Quizz AP #3"
     body = answer
 
     q = urllib.parse.quote

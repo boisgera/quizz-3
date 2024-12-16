@@ -48,21 +48,21 @@ def __(mo):
     return
 
 
-@app.cell(hide_code=True)
-def __(mo):
+app._unparsable_cell(
+    r"""
     widget_2 = mo.ui.code_editor(value='''\
-    objects = [None, 1, 2.0, 3.0+0j, "quatre"]
+    objects = [None, 1, 2.0, 3.0+0j, \"quatre\"]
     hashes = {{hash(obj) % 2**8 for obj in objects}}\
     ''')
 
     comments_2 = mo.ui.text_area(debounce=False)
 
     mo.md(f'''
-    Réécrire le code suivant sans utiliser de "set comprehension" (notation "set-builder")
+    Réécrire le code suivant sans utiliser de \"set comprehension\" (notation \"set-builder\")
 
     ```python
-    objects = [None, 1, 2.0, 3.0+0j, "quatre"]
-    hashes = {{hash(obj) % 2**8 for obj in objects}}
+    objects = [None, 1, 2.0, 3.0+0j, \"quatre\"]
+    hashes = {hash(obj) % 2**8 for obj in objects}
     ```
 
     Votre réponse:
@@ -72,7 +72,10 @@ def __(mo):
 
     {comments_2}
     ''')
-    return comments_2, widget_2
+    """,
+    name="__",
+    column=None, disabled=False, hide_code=True
+)
 
 
 @app.cell
